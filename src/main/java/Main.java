@@ -14,7 +14,9 @@ public class Main {
             if (card.getPlayerNum() == 1) {
                 System.out.println(card);
             }
+            System.out.println(card);
         }
+        System.out.println(game.getDeck().get(1).getRank());
 
 
     }
