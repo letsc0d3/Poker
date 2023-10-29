@@ -1,24 +1,20 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 enum Suit {CLUBS, DIAMONDS, HEARTS, SPADES};
 
-enum Position {DECK, HOLE, PLAYER}
+//enum Location {DECK, HOLE, PLAYER}
 
 public class Card {
     private int rank;
     private Suit suit;
-    private Position position;
-    private int playerNum;
+//    private String location;
+//    private int playersNum;
     // private List<String> ranks;
 //    private List<>
 
-    public Card(Integer rank, Suit suit, Position position, int playerNum) {
+    public Card(Integer rank, Suit suit, String location, int playersNum) {
         this.rank = rank;
         this.suit = suit;
-        this.position = position;
-        this.playerNum = playerNum;
+//        this.location = location;
+//        this.playersNum = playersNum;
 //        this.ranks = new ArrayList<>(Arrays.asList("2", "3", "4", "5", "6", "7", "8", "9", "10",
 //                "Jack", "Queen", "King", "Ace"));
     }
@@ -60,21 +56,21 @@ public class Card {
         this.suit = suit;
     }
 
-    public Position getPosition() {
-        return position;
-    }
+//    public String getPosition() {
+//        return location;
+//    }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
+//    public void setPosition(String location) {
+//        this.location = location;
+//    }
 
-    public int getPlayerNum() {
-        return playerNum;
-    }
+//    public int getPlayerNum() {
+//        return playersNum;
+//    }
 
-    public void setPlayerNum(int playerNum) {
-        this.playerNum = playerNum;
-    }
+//    public void setPlayerNum(int playerNum) {
+//        this.playersNum = playerNum;
+//    }
 
     @Override
     public String toString() {
@@ -83,8 +79,8 @@ public class Card {
                 "rank=" +// rank +
                 formatRank(rank) +
                 ", suit=" + suit +
-                ", position=" + position +
-                ", playerNum=" + playerNum +
+//                ", location=" + location +
+//                ", playerNum=" + playersNum +
                 //  ", ranks=" + ranks +
                 '}';
     }

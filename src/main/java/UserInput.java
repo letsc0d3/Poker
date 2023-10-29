@@ -9,7 +9,7 @@ public class UserInput {
 
     public int getNum(String str) {
         int num = 0;
-        int minNum = 1;
+        int minNum = 0;
         //int maxNum = 9;
         boolean validInput = false;
         while (!validInput) {
