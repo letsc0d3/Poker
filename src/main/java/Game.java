@@ -9,6 +9,8 @@ public class Game {
     private int amountOfPlayers;
     private int stake;
     private Map<String, List<Card>> locationOfCards;
+    private List<Player> players;
+    private List<Card> hole;
 
     UserInput userInput = new UserInput();
 
@@ -16,9 +18,14 @@ public class Game {
     public Game() {
         this.amountOfPlayers = userInput.getNum("\nAnzahl Spieler: ");
         this.deck = new ArrayList<>();
+        this.hole = new ArrayList<>();
         this.stake = 0;
         createDeck();
         this.locationOfCards = new HashMap<>();
+        this.players = new ArrayList<>();
+        for (int i = 1; i <= amountOfPlayers; i++) {
+            players.add(new Player(i));
+        }
     }
 
 
@@ -38,37 +45,66 @@ public class Game {
         }
     }
 
-    public void distributeOneCardToEachPlayer() {
-        for (int i = 1; i <= amountOfPlayers; i++) {
-            int index = ThreadLocalRandom.current().nextInt(0, deck.size());
-            String playerNum = "player" + i;
-
-            if (!locationOfCards.containsKey(playerNum)) {
-                List<Card> playerCards = new ArrayList<>();
-                locationOfCards.put(playerNum, playerCards);
+    public void distributeThisManyCardsToEachPlayer(int amount) {
+        for (int j = 0; j < amount; j++) {
+            for (int i = 0; i < amountOfPlayers; i++) {
+                int randomIndex = ThreadLocalRandom.current().nextInt(0, deck.size());
+                Card randomCardFromDeck = deck.get(randomIndex);
+                players.get(i).getPlayerCards().add(randomCardFromDeck);
+                deck.remove(randomIndex);
             }
-                locationOfCards.get(playerNum).add(deck.get(index));
-                deck.remove(index);
         }
     }
+
 
     public List<Card> getDeck() {
         return deck;
     }
 
-    public void askEachPlayerForStake() {
+    public void showHandAndAskForStake() {
 
-        for (int i = 1; i <= amountOfPlayers; i++) {
-            String player = "player" + i;
+        for (int i = 0; i < amountOfPlayers; i++) {
+//            String player = "player" + i;
             System.out.println();
-            System.out.println("Player " + i + ", this is your hand:");
-            for (Card card : locationOfCards.get(player)) {
-//                if (card.getPlayerNum() == i) {
+            System.out.println("Player " + (i + 1) + ", this is your hand:");
+            for (Card card : players.get(i).getPlayerCards()) {
                 System.out.println(card.getSuit() + " ->\t" + card.getRank());
-            }
-//            System.out.println(locationOfCards);
-            int playersStake = userInput.getNum("What is your stake? Type \"0\" if you want to quit: ");
 
+            }
+
+
+//            for (Card card : locationOfCards.get(player)) {
+////                if (card.getPlayerNum() == i) {
+//                System.out.println(card.getSuit() + " ->\t" + card.getRank());
+//            }
+//            System.out.println(locationOfCards);
+
+            int playerRoundStake = userInput.getNum("What is your stake? Type \"0\" if you want to quit: ");
+            evaluateStake(i, playerRoundStake);
+        }
+    }
+
+    private void evaluateStake(int playerIndex, int playerRoundStake) {
+        if (playerRoundStake == 0) {
+            players.get(playerIndex).setHasQuit(true);
+        } else {
+            players.get(playerIndex).setPlayerTotalStake(players.get(playerIndex).getPlayerTotalStake() + playerRoundStake);
+        }
+    }
+
+    public void putThisManyCardsIntoHole(int amount) {
+        for (int i = 0; i < amount; i++) {
+            int randomIndex = ThreadLocalRandom.current().nextInt(0, deck.size());
+            hole.add(deck.get(randomIndex));
+            deck.remove(randomIndex);
+        }
+        printHole();
+    }
+
+    public void printHole() {
+        System.out.println("These are the cards in the hole:");
+        for (Card card : hole) {
+            System.out.println(card.getSuit() + " ->\t" + card.getRank());
         }
     }
 }
